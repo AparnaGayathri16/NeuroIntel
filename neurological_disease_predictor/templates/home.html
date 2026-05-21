@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+{% block content %}
+{% if message %}
+<div class="alert alert-danger">{{ message }}</div>
+{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link href="{{ url_for('static', filename='css2/styles.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Predict your disease based on symptoms</h1>
+    <form action="/predict1" method="post">
+        <label for="Symptom1">Symptom 1:</label>
+        <select name="Symptom1" id="Symptom1">
+            <option value="">Select</option>
+            {% for symptom in l1 %}
+            <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+        <label for="Symptom2">Symptom 2:</label>
+        <select name="Symptom2" id="Symptom2">
+            <option value="">Select</option>
+            {% for symptom in l1 %}
+            <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+        <label for="Symptom3">Symptom 3:</label>
+        <select name="Symptom3" id="Symptom3">
+            <option value="">Select</option>
+            {% for symptom in l1 %}
+            <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+        <label for="Symptom4">Symptom 4:</label>
+        <select name="Symptom4" id="Symptom4">
+            <option value="">Select</option>
+            {% for symptom in l1 %}
+            <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+        <label for="Symptom5">Symptom 5:</label>
+        <select name="Symptom5" id="Symptom5">
+            <option value="">Select</option>
+            {% for symptom in l1 %}
+            <option value="{{ symptom }}">{{ symptom }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Predict</button>
+    </form>
+</body>
+
+
+</html>
+
+
+
+{% endblock %}

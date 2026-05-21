@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>````````````````````````````````````
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Stroke Prediction</title>
+    <style>
+        /*just bg and body style*/
+        body {
+            margin: 40px;
+            background-color: beige;
+
+        }
+
+        .container {
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .btn-container {
+            background: #ccc;
+            box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+            border-radius: 5px;
+            padding: 25px;
+        }
+
+        .head {
+            font-weight: bolder;
+        }
+
+        .btn-primary {
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #073b4c !important;
+            border-color: #023047 !important;
+            padding: 10px;
+            margin-top: 15px;
+        }
+
+        label {
+            width: 50%;
+        }
+
+        #predict {
+            display: none;
+        }
+
+        .form-group {
+            padding: 2px;
+        }
+
+        .form-select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 0px;
+            width: 200px;
+        }
+
+        .prediction {
+            background: #073b4c;
+            color: aliceblue;
+        }
+
+        .animated-box {
+            text-align: center;
+            padding: 20px;
+            margin: 20px auto;
+            color: white;
+            background-color: #073b4c;
+            border-radius: 5px;
+            max-width: 600px;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        /* Simple fade-in effect */
+        .fade-in {
+            opacity: 1 !important;
+        }
+    </style>
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+        <a class="navbar-brand" href="#">Stroke Prediction</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:5000/" style="color: white;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('alzheimerPage') }}" style="color: white;">Alzheiemr</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('braintumorPage') }}" style="color: white;">Brain Tumor</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <div id="prediction-placeholder" style="display:none;">
+        <div id="prediction-message" class="animated-box"></div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="head">Fill your report details</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-container">
+
+                    <!-- Main Input For Receiving Query to our ML -->
+                    <form action="{{ url_for('predictPage')}}" method="post" class="form-inline">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img class="image" src="{{ url_for('static', filename='logo1.png')}}" width="100%"
+                                    height="100%" />
+                            </div>
+                            <div class="col-md-6">
+                                <div class="container">
+                                    <h4>Enter Details</h4>
+                                    <div class="form-group">
+                                        <label for="gender">Gender </label>
+                                        <select class="form-select" id="gender" name="gender"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="1">Male</option>
+                                            <option value="0">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="age">Age</label>
+                                        <input type="number" class="form-control" name="age" required="required"
+                                            placeholder="Age" min=1 max=100 />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hypertension">Hypertension</label>
+                                        <select class="form-select" id="hypertension" name="hypertension"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="heart_disease">Heart Disease</label>
+                                        <select class="form-select" id="disease" name="disease"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ever_married">Ever Married</label>
+                                        <select class="form-select" id="married" name="married"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="work_type">Work Type</label>
+                                        <select class="form-select" id="work" name="work"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="3">Self-employed</option>
+                                            <option value="2">Private</option>
+                                            <option value="4">children</option>
+                                            <option value="0">Government Job</option>
+                                            <option value="1">Never_worked</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="residence_type">Residence Type</label>
+                                        <select class="form-select" id="residence" name="residence"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="1">Urban</option>
+                                            <option value="0">Rural</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="avg_glucose_level">Average Glucose Level</label>
+                                        <input type="text" class="form-control" name="avg_glucose_level"
+                                            required="required" placeholder="Average Glucose Level" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bmi">BMI</label>
+                                        <input type="text" class="form-control" name="bmi" required="required"
+                                            placeholder="Body Mass Index (BMI)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="smoking">Smoking Status</label>
+                                        <select class="form-select" id="smoking" name="smoking"
+                                            aria-label="Default select example">
+                                            <option value="">Select</option>
+                                            <option value="0">Unknown</option>
+                                            <option value="2">Never smoked</option>
+                                            <option value="1">Formerly smoked</option>
+                                            <option value="3">Smokes</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg">Predict</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+
+                    <br />
+                    <script>
+                        $(document).ready(function () {
+                            // Example: Assuming 'predictionText' is a variable injected by your server-side template rendering
+                            // Replace this with the actual logic to fetch or check for prediction text
+                            var predictionText = "{{prediction_text}}"; // Your server-side template injects the prediction text here
+
+                            if (predictionText && predictionText !== "") {
+                                $('#prediction-message').text(predictionText); // Set the prediction text
+                                $('#prediction-placeholder').show(); // Make the placeholder visible
+                                $('#prediction-message').addClass('fade-in'); // Apply the animation effect
+                            }
+                        });
+                    </script>
+
+</body>
+
+</html>

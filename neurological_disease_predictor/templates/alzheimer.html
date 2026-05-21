@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Alzheimer Classification</title>
+	<link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+	<style>
+		body {
+			background-color: #ccc;
+			background-size: cover;
+			text-align: center;
+		}
+
+		.container {
+			padding-top: 20px;
+		}
+
+		.image-section {
+			margin-top: 20px;
+			display: block;
+			text-align: center;
+		}
+
+		.img-preview {
+			width: 200px;
+			/* Adjust width as needed */
+			height: 200px;
+			/* Adjust height as needed */
+			border: 3px solid #333;
+			margin: 0 auto;
+			background-image: url('');
+			/* Placeholder for the image preview */
+			background-size: cover;
+			background-position: center center;
+		}
+
+		#result {
+			margin-top: 20px;
+			color: black;
+		}
+
+		.bg-dark {
+			background-color: #4b6ebb !important;
+		}
+
+		.upload-label {
+			cursor: pointer;
+			color: white;
+			background-color: #007bff;
+			padding: 10px 20px;
+			border-radius: 5px;
+		}
+
+		input[type="file"] {
+			display: none;
+		}
+
+		footer {
+			margin-top: 20px;
+			position: relative;
+			bottom: 0;
+			width: 100%;
+			text-align: center;
+			color: white;
+		}
+	</style>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+		<a class="navbar-brand" href="#">Alzheimer Prediction</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="http://127.0.0.1:5000/" style="color: white;">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('brainstrokePage') }}" style="color: white;">BrainStroke</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('braintumorPage') }}" style="color: white;">Brain Tumor</a>
+				</li>
+
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div id="content" style="margin-top:2em">
+			<div class="row justify-content-center">
+				<div class="col-md-8">
+					<h2 style="color: black;">Upload MRI to Predict</h2><br><br>
+					<form action="http://localhost:5000/predict" id="upload-file" method="post"
+						enctype="multipart/form-data">
+						<label for="imageUpload" class="upload-label">Upload MRI Image</label>
+						<input type="file" name="image" id="imageUpload" accept=".png, .jpg, .jpeg">
+						<div class="image-section" style="display:none;">
+							<div class="img-preview" id="imagePreview"></div><br>
+							<div>
+								<button type="button" class="btn btn-info btn-lg" id="btn-predict">Predict!</button>
+							</div>
+						</div><br>
+						<div class="loader" style="display:none;"></div>
+						<h3><span id="result"></span></h3>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		<script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
+
+	</footer>
+
+</body>
+
+</html>
